@@ -6,6 +6,16 @@ import numpy as np
 import math
 import time
 from PIL import Image, ImageTk
+from pycaw.pycaw import AudioUtilities
+
+# Get default speakers endpoint
+devices = AudioUtilities.GetSpeakers()
+
+# Get volume interface directly
+volume = devices.EndpointVolume
+
+# Get volume range
+vol_min, vol_max, _ = volume.GetVolumeRange()
 
 conf_value_label = None
 track_value_label = None
@@ -155,6 +165,10 @@ def update_frame():
 
                 # still control volume
                 volume_percent = int(np.interp(length, [20, 200], [0, 100]))
+
+                system_vol = np.interp(volume_percent, [0, 100], [vol_min, vol_max])
+                volume.SetMasterVolumeLevel(system_vol, None)
+                
                 volume_percent = volume_percent  # keep last volume
 
 
