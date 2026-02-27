@@ -1,123 +1,148 @@
-# ✋ Hand Gesture Volume Controller (MediaPipe + OpenCV + Tkinter)
+# 🖐️ Hand Gesture Volume Controller
 
-A real-time computer vision application that controls system volume using hand gestures detected through a webcam.
-Built using **Python, MediaPipe, OpenCV, and Tkinter GUI**.
+Control your **system volume** in real-time using **hand gestures** powered by **MediaPipe**, **OpenCV**, and **Tkinter GUI**.
 
-This project demonstrates practical usage of computer vision for Human-Computer Interaction (HCI).
-
----
-
-## 📌 Features
-
-* 🎥 Live webcam feed inside GUI
-* 🖐️ Detects multiple hands (configurable)
-* 📍 21 hand landmarks tracking
-* 🔊 Volume control using pinch gesture (thumb + index)
-* 🔇 Automatic mute when fist detected
-* 📊 Real-time dashboard:
-
-  * Hands detected
-  * Detection FPS
-  * Latency (ms)
-  * Model status
-* 🎚 Adjustable detection parameters:
-
-  * Detection confidence (%)
-  * Tracking confidence (%)
-  * Maximum hands (1-4)
-* 📉 Visual volume bar display
+This application detects your hand via webcam, measures the distance between your **thumb and index finger**, classifies gestures, and adjusts the system volume accordingly.
 
 ---
 
-## 🧠 Gestures
+## 🚀 Features
 
-| Gesture                | Action          |
-| ---------------------- | --------------- |
-| 🤏 Thumb + Index pinch | Adjust volume   |
-| ✊ Closed fist         | Mute volume     |
-| Open hand              | Active tracking |
+* 🎥 Real-time webcam hand tracking
+* ✋ Gesture classification:
+
+  * **Closed** → Mute
+  * **Pinch** → Medium volume
+  * **Open Hand** → High volume
+* 🔊 Direct system volume control (via Pycaw)
+* 📊 Live detection stats:
+
+  * FPS
+  * Latency
+  * Resolution
+  * Frame time
+* 🎛 Adjustable:
+
+  * Detection confidence
+  * Tracking confidence
+  * Max number of hands
+* 📏 Real-time pixel distance measurement
+* 🎨 Clean scrollable Tkinter interface
+
+---
+
+## 🧠 How It Works
+
+1. MediaPipe detects 21 hand landmarks.
+2. The distance between:
+
+   * Thumb tip (Landmark 4)
+   * Index tip (Landmark 8)
+3. Distance is mapped to:
+
+   * Gesture state
+   * Volume percentage (0–100%)
+4. Pycaw updates system master volume.
+
+---
+
+## 🖼️ Gesture Logic
+
+| Distance (px) | Gesture   | Action        |
+| ------------- | --------- | ------------- |
+| < 40 px       | Closed    | Mute (0%)     |
+| 40 – 120 px   | Pinch     | Medium Volume |
+| > 120 px      | Open Hand | High Volume   |
+
+---
+
+## 📦 Requirements
+
+Install dependencies:
+
+```bash
+pip install opencv-python mediapipe numpy pillow pycaw comtypes
+```
+
+> ⚠️ Windows only (Pycaw works with Windows audio endpoint)
+
+---
+
+## ▶️ How to Run
+
+```bash
+python your_script_name.py
+```
+
+Then:
+
+1. Click **Start Camera**
+2. Show your hand in front of the webcam
+3. Control volume using thumb & index finger distance
+4. Click **Stop Camera** when finished
 
 ---
 
 ## 🛠 Technologies Used
 
-* Python 3.10
+* Python 3.x
 * OpenCV
-* MediaPipe Hands
-* Tkinter GUI
+* MediaPipe
+* Tkinter
+* Pycaw
 * NumPy
 * Pillow
 
 ---
 
-## 📂 Project Structure
+## 📊 Interface Sections
 
-```
-HandGesture/
-|__ camera_test.py
-│── gesture_ui.py
-│── README.md
-```
-
----
-
-## ⚙️ Installation
-
-### 1️⃣ Clone the repository
-
-```
-git clone https://github.com/bhatdhrinidhii/HandGestureVolumeControl.git
-cd HandGestureVolumeControl
-```
-
-### 2️⃣ Create virtual environment
-
-```
-python -m venv venv
-venv\Scripts\activate   # Windows
-```
-
-### 3️⃣ Install dependencies
-
-pip install opencv-python mediapipe==0.10.9 numpy pillow
-
-
-## ▶️ Run the Application
-
-```
-python gesture_ui.py
-```
+* Detection Status
+* Detection Parameters
+* Detection Info
+* Distance Measurement
+* Gesture States
+* Real-time Video Feed
 
 ---
 
-## 🧩 How It Works
+## 🎯 Controls
 
-1. Webcam captures frames
-2. MediaPipe detects 21 hand landmarks
-3. Distance between thumb tip (ID 4) and index tip (ID 8) is calculated
-4. Distance mapped to volume percentage
-5. GUI updates volume bar & stats in real-time
-
----
-
-## 📊 Detection Parameters
-
-| Parameter            | Purpose                               |
-| -------------------- | ------------------------------------- |
-| Detection Confidence | Probability required to detect a hand |
-| Tracking Confidence  | Stability of landmark tracking        |
-| Max Hands            | Maximum simultaneous hands detectable |
+| Button       | Function                     |
+| ------------ | ---------------------------- |
+| Start Camera | Activates webcam & detection |
+| Stop Camera  | Stops webcam                 |
+| Exit         | Closes application           |
 
 ---
 
-## 🎯 Learning Outcomes
+## ⚙ Adjustable Parameters
 
-* Real-time computer vision processing
-* Human-computer interaction design
-* GUI integration with CV pipelines
-* MediaPipe landmark interpretation
-* Performance optimization (FPS & latency monitoring)
+* **Detection Confidence** (0.1 – 1.0)
+* **Tracking Confidence** (0.1 – 1.0)
+* **Max Hands** (1 – 4)
+
+Changing parameters reloads the MediaPipe model automatically.
 
 ---
 
-Thank You!
+## 📌 Notes
+
+* Good lighting improves detection accuracy.
+* Keep your hand clearly visible.
+* Recommended distance from camera: 30–70 cm.
+* FPS depends on your system performance.
+
+---
+
+## 🔮 Future Improvements (Optional Ideas)
+
+* Add smoothing to volume changes
+* Add gesture-based brightness control
+* Add left/right hand distinction
+* Cross-platform audio support
+* Add dark/light mode toggle
+
+---
+
+Thank you!
