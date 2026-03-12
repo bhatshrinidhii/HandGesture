@@ -1,148 +1,237 @@
-# 🖐️ Hand Gesture Volume Controller
+# 🖐️ Hand Gesture Volume Control System
 
-Control your **system volume** in real-time using **hand gestures** powered by **MediaPipe**, **OpenCV**, and **Tkinter GUI**.
+A **Computer Vision based desktop application** that allows users to control their **system volume using hand gestures** detected through a webcam.
 
-This application detects your hand via webcam, measures the distance between your **thumb and index finger**, classifies gestures, and adjusts the system volume accordingly.
-
----
-
-## 🚀 Features
-
-* 🎥 Real-time webcam hand tracking
-* ✋ Gesture classification:
-
-  * **Closed** → Mute
-  * **Pinch** → Medium volume
-  * **Open Hand** → High volume
-* 🔊 Direct system volume control (via Pycaw)
-* 📊 Live detection stats:
-
-  * FPS
-  * Latency
-  * Resolution
-  * Frame time
-* 🎛 Adjustable:
-
-  * Detection confidence
-  * Tracking confidence
-  * Max number of hands
-* 📏 Real-time pixel distance measurement
-* 🎨 Clean scrollable Tkinter interface
+The system uses **MediaPipe Hand Tracking**, **OpenCV**, and a **Tkinter dashboard UI** to detect gestures, measure finger distance, and map it to real-time system volume.
 
 ---
 
-## 🧠 How It Works
+# 🎯 Project Overview
 
-1. MediaPipe detects 21 hand landmarks.
-2. The distance between:
+This application captures live video from the webcam and detects hand landmarks using **MediaPipe**.
+The distance between the **thumb tip** and **index finger tip** is calculated and mapped to **system volume levels (0–100%)**.
 
-   * Thumb tip (Landmark 4)
-   * Index tip (Landmark 8)
-3. Distance is mapped to:
+The interface provides **real-time feedback**, including:
 
-   * Gesture state
-   * Volume percentage (0–100%)
-4. Pycaw updates system master volume.
+* Gesture classification
+* Current volume level
+* Distance measurement
+* Detection performance metrics
+* Visual volume control indicator
+* Distance-to-volume mapping graph
 
 ---
 
-## 🖼️ Gesture Logic
+# 🚀 Features
 
-| Distance (px) | Gesture   | Action        |
+### 🎥 Real-Time Hand Detection
+
+* Detects up to **4 hands simultaneously**
+* Tracks **21 hand landmarks**
+* Displays hand skeleton on the video feed
+
+### ✋ Gesture Recognition
+
+Based on the distance between thumb and index finger:
+
+| Distance      | Gesture   | Action        |
 | ------------- | --------- | ------------- |
-| < 40 px       | Closed    | Mute (0%)     |
-| 40 – 120 px   | Pinch     | Medium Volume |
-| > 120 px      | Open Hand | High Volume   |
+| `< 40 px`     | Closed    | Mute Volume   |
+| `40 – 120 px` | Pinch     | Medium Volume |
+| `> 120 px`    | Open Hand | High Volume   |
 
 ---
 
-## 📦 Requirements
+### 🔊 System Volume Control
 
-Install dependencies:
-
-```bash
-pip install opencv-python mediapipe numpy pillow pycaw comtypes
-```
-
-> ⚠️ Windows only (Pycaw works with Windows audio endpoint)
+* Maps finger distance to **0–100% system volume**
+* Uses **Pycaw** to control Windows master audio
+* Smooth volume transitions
 
 ---
 
-## ▶️ How to Run
+### 📊 Performance Monitoring
 
-```bash
-python your_script_name.py
-```
+The UI displays real-time system performance:
 
-Then:
-
-1. Click **Start Camera**
-2. Show your hand in front of the webcam
-3. Control volume using thumb & index finger distance
-4. Click **Stop Camera** when finished
+* Detection FPS
+* Latency
+* Frame processing time
+* Camera resolution
+* Number of detected hands
 
 ---
 
-## 🛠 Technologies Used
+### 📈 Distance–Volume Graph
 
-* Python 3.x
-* OpenCV
-* MediaPipe
-* Tkinter
-* Pycaw
-* NumPy
-* Pillow
+Live visualization of:
+
+* Finger distance
+* Corresponding volume level
+* Real-time mapping indicator
 
 ---
 
-## 📊 Interface Sections
+### 🎛 Adjustable Detection Parameters
 
-* Detection Status
+Users can tune the model behavior directly from the UI:
+
+| Parameter            | Range     |
+| -------------------- | --------- |
+| Detection Confidence | 0.1 – 1.0 |
+| Tracking Confidence  | 0.1 – 1.0 |
+| Max Hands            | 1 – 4     |
+
+Changing parameters **reloads the MediaPipe model dynamically**.
+
+---
+
+### 🎨 Interactive UI Dashboard
+
+The Tkinter interface contains:
+
+* Detection Status Panel
+* Current Volume Display
 * Detection Parameters
 * Detection Info
 * Distance Measurement
-* Gesture States
-* Real-time Video Feed
+* Distance–Volume Graph
+* Gesture State Indicators
+* Live Camera Preview
 
 ---
 
-## 🎯 Controls
+# 🧠 System Workflow
 
-| Button       | Function                     |
-| ------------ | ---------------------------- |
-| Start Camera | Activates webcam & detection |
-| Stop Camera  | Stops webcam                 |
-| Exit         | Closes application           |
+```
+Webcam Input
+      │
+      ▼
+MediaPipe Hand Detection
+      │
+      ▼
+Landmark Extraction (21 points)
+      │
+      ▼
+Thumb–Index Distance Calculation
+      │
+      ▼
+Gesture Classification
+      │
+      ▼
+Volume Mapping (0–100%)
+      │
+      ▼
+System Volume Adjustment (Pycaw)
+      │
+      ▼
+UI Feedback + Graph Update
+```
+
+---
+
+# 🛠 Technologies Used
+
+| Technology | Purpose                   |
+| ---------- | ------------------------- |
+| Python     | Core Programming Language |
+| OpenCV     | Webcam processing         |
+| MediaPipe  | Hand landmark detection   |
+| Tkinter    | GUI interface             |
+| Pycaw      | Windows volume control    |
+| NumPy      | Mathematical operations   |
+| Pillow     | Image processing          |
+| Matplotlib | Graph visualization       |
 
 ---
 
-## ⚙ Adjustable Parameters
+# 📦 Installation
 
-* **Detection Confidence** (0.1 – 1.0)
-* **Tracking Confidence** (0.1 – 1.0)
-* **Max Hands** (1 – 4)
+Install required dependencies:
 
-Changing parameters reloads the MediaPipe model automatically.
+```bash
+pip install opencv-python mediapipe numpy pillow pycaw comtypes matplotlib
+```
 
----
-
-## 📌 Notes
-
-* Good lighting improves detection accuracy.
-* Keep your hand clearly visible.
-* Recommended distance from camera: 30–70 cm.
-* FPS depends on your system performance.
+⚠ **Note:**
+Pycaw works only on **Windows operating systems**.
 
 ---
 
-## 🔮 Future Improvements (Optional Ideas)
+# ▶️ How to Run
 
-* Add smoothing to volume changes
-* Add gesture-based brightness control
-* Add left/right hand distinction
-* Cross-platform audio support
-* Add dark/light mode toggle
+Clone or download the project and run:
+
+```bash
+python Milestone04.py
+```
 
 ---
+
+# 🕹 Usage Instructions
+
+1. Launch the application
+2. Click **Start Camera**
+3. Show your hand in front of the webcam
+4. Adjust volume using thumb and index finger distance
+5. Click **Stop Camera** to stop detection
+6. Click **Exit** to close the application
+
+---
+
+# 📊 Interface Overview
+
+### Live Gesture Control
+
+Displays:
+
+* Hand landmarks
+* Gesture distance line
+* Volume bar indicator
+
+### Detection Status
+
+Shows:
+
+* Camera status
+* Current gesture
+* Number of detected hands
+* Detection FPS
+* Latency
+
+### Current Volume
+
+Large visual display showing current system volume percentage.
+
+### Distance Measurement
+
+Displays the real-time distance between thumb and index finger.
+
+### Distance to Volume Mapping
+
+Graph showing the relationship between finger distance and system volume.
+
+---
+
+# 🧪 Testing
+
+Testing was performed through **real-time gesture interaction using webcam input**.
+
+| Test Case      | Expected Result  |
+| -------------- | ---------------- |
+| Start Camera   | Webcam activates |
+| Closed Gesture | Volume set to 0% |
+| Pinch Gesture  | Volume ≈ 50%     |
+| Open Hand      | Volume ≈ 100%    |
+| No Hand        | Gesture = None   |
+
+---
+
+# ⚠ Notes
+
+* Ensure **good lighting conditions** for better detection accuracy.
+* Keep the hand **clearly visible to the camera**.
+* Recommended distance from camera: **30–70 cm**.
+* System performance may affect FPS.
 
 Thank you!
